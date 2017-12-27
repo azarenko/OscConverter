@@ -1,0 +1,32 @@
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\bin\Debug\OscConverter.exe
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\bin\Debug\OscConverter.pdb
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.MainForm.resources
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.Properties.Resources.resources
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.csproj.GenerateResource.Cache
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.exe
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.pdb
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.exe
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.pdb
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\bin\Debug\OscConverter.exe
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\bin\Debug\OscConverter.pdb
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.MainForm.resources
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.Properties.Resources.resources
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Debug\OscConverter.csproj.GenerateResource.Cache
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\ResolveAssemblyReference.cache
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.MainForm.resources
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.Properties.Resources.resources
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.csproj.GenerateResource.Cache
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\bin\Release\OscConverter.exe
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\bin\Release\OscConverter.pdb
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.MainForm.resources
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.Properties.Resources.resources
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.csproj.GenerateResource.Cache
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.exe
+C:\Documents and Settings\Serega\Мои документы\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.pdb
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\bin\Release\OscConverter.exe
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\bin\Release\OscConverter.pdb
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.exe
+C:\Users\sergey.azarenko\Dropbox\OscConverter\OscConverter\obj\Release\OscConverter.pdb
