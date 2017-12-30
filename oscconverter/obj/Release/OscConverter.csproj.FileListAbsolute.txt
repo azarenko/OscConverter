@@ -1,0 +1,8 @@
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.exe
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.pdb
+C:\projects\OscConverter\OscConverter\bin\Release\OscConverter.exe
+C:\projects\OscConverter\OscConverter\bin\Release\OscConverter.pdb
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.csprojResolveAssemblyReference.cache
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.MainForm.resources
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.Properties.Resources.resources
+C:\projects\OscConverter\OscConverter\obj\Release\OscConverter.csproj.GenerateResource.Cache

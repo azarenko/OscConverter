@@ -32,7 +32,7 @@ namespace OscConverter
 
                 for (int i = 0; i < channels.Count; i++)
                 {
-                    inputFileInfo.Text += "Канал " + (i + 1) + ":\r\n";
+                    inputFileInfo.Text += "Channel " + (i + 1) + ":\r\n";
                     inputFileInfo.Text += channels[i].ToString();
                     inputFileInfo.Text += "\r\n";
                 }

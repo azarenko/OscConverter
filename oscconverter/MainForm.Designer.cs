@@ -205,7 +205,7 @@ namespace OscConverter
             this.outPutFormatList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outPutFormatList.FormattingEnabled = true;
             this.outPutFormatList.Items.AddRange(new object[] {
-            "Постоловський",
+            "Postolov",
             "MTPro"});
             this.outPutFormatList.Location = new System.Drawing.Point(64, 19);
             this.outPutFormatList.Name = "outPutFormatList";

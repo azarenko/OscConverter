@@ -19,17 +19,14 @@ namespace OscConverter.Output
             FileStream fs = null;
             fs = new FileStream(filename, FileMode.Create);
 
-            // Тип файла
             fs.WriteByte(0x4d);
             fs.WriteByte(0x77);
 
-            // Размер заголовков каналов
             short headSize = (short)((chennels.Count * 0x52) + 0x18);
             fs.Write(BitConverter.GetBytes(headSize), 0, 2);            
 
             fs.Write(new byte[] { 0x00, 0x00, 0x22, 0x00, 0x03, 0x00 }, 0, 6);
                             
-            // Частота дискретезации
             int inputSampleRate = (int)(1.0 / (chennels[0].TimeStep / 1000.0));
             byte[] inputSampleRateBuffer = BitConverter.GetBytes(inputSampleRate);
             fs.Write(inputSampleRateBuffer, 0, inputSampleRateBuffer.Length);
@@ -51,7 +48,6 @@ namespace OscConverter.Output
                 fs.Write(new byte[] { 0x00,0xFE,0xFE,0xFE,0x00,0x12,0x00 }, 0, 7);
             }
 
-            // Расчет контрольной суммы
             int curr_pos = (int)fs.Position;
             fs.Seek(0, SeekOrigin.Begin);
             byte[] crc_buffer = new byte[curr_pos];
@@ -63,13 +59,11 @@ namespace OscConverter.Output
 
             fs.WriteByte(0x57);
             fs.WriteByte(0x44);
-
-            // Кол-во выборок данных   
+  
             long dataSize = ((chennels[0].Data.LongLength * chennels.Count) * 2);
             byte[] countSamplesBuffer = BitConverter.GetBytes(dataSize);
             fs.Write(countSamplesBuffer, 0, countSamplesBuffer.Length);
 
-            // Запись блоков данных
             long sampleCount = chennels[0].Data.LongLength;
             for (long i = 0; i < sampleCount; i++)
             {

@@ -22,10 +22,10 @@ namespace OscConverter
 
         public new string ToString()
         {
-            string info = "Время записи: " + (Data.Length * (TimeStep / 1000.0)) + " с\r\n";
-            info += "Частота дискретезации: " +  (1.0 / TimeStep) + " кГц\r\n";
-            info += "Макс. значение: " + Max.ToString("N3") +" В\r\n";
-            info += "Мин. значение: " + Min.ToString("N3") + " В\r\n";
+            string info = "Record length: " + (Data.Length * (TimeStep / 1000.0)) + " sec\r\n";
+            info += "Seample rates: " +  (1.0 / TimeStep) + " kHz\r\n";
+            info += "Max. amplitude: " + Max.ToString("N3") +" V\r\n";
+            info += "Min. amplitude: " + Min.ToString("N3") + " V\r\n";
             return info;
         }
 
