@@ -80,6 +80,26 @@ namespace OscConverter.Output
 
         private double GetChannelK(Channel ch)
         {
+            if (ch.Max < 0.2 && ch.Min > -0.2)
+            {
+                return 8192.0 / 0.4;
+            }
+
+            if (ch.Max < 0.5 && ch.Min > -0.5)
+            {
+                return 8192.0 / 1.0;
+            }
+
+            if (ch.Max < 1.0 && ch.Min > -1.0)
+            {
+                return 8192.0 / 2.0;
+            }
+
+            if (ch.Max < 2.0 && ch.Min > -2.0)
+            {
+                return 8192.0 / 4.0;
+            }
+
             if (ch.Max < 5.0 && ch.Min > -5.0)
             {
                 return 8192.0 / 10.0;
@@ -125,6 +145,26 @@ namespace OscConverter.Output
 
         private byte GetChannelInputLevelCode(Channel ch)
         {
+            if (ch.Max < 0.2 && ch.Min > -0.2)
+            {
+                return 0x02;
+            }
+
+            if (ch.Max < 0.5 && ch.Min > -0.5)
+            {
+                return 0x05;
+            }
+
+            if (ch.Max < 1.0 && ch.Min > -1.0)
+            {
+                return 0x11;
+            }
+
+            if (ch.Max < 2.0 && ch.Min > -2.0)
+            {
+                return 0x12;
+            }
+
             if (ch.Max < 5.0 && ch.Min > -5.0)
             {
                 return 0x15;

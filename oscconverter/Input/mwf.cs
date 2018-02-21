@@ -7,26 +7,9 @@ namespace OscConverter.Input
 {
     public class mwf : InputInterface
     {
-        double[] TimeDivision = new double[] {
-                1.0,
-                2.0,
-                5.0,
-                10.0,
-                20.0,
-                50.0,
-                100.0,
-                200.0};
-
-        double[] DividerValue = new double[]{
-                1.0,
-                2.0,
-                10.0,
-                50.0
-        };
-
         public mwf(string file)
         {
-            byte[] buffer = new byte[32];
+            byte[] buffer = new byte[256];
 
             FileStream fs = null;
             fs = new FileStream(file, FileMode.Open);
@@ -43,7 +26,7 @@ namespace OscConverter.Input
             int chennelsCount = (headSize - 0x18) / 0x52;
 
             _Channels.Clear();
-            for (int i=0; i< chennelsCount; i++)
+            for (int i = 0; i < chennelsCount; i++)
             {
                 _Channels.Add(new Channel());
             }
@@ -53,158 +36,202 @@ namespace OscConverter.Input
             // Read seamples rate
             fs.Read(buffer, 0, 4);
             int inputSampleRateHz = BitConverter.ToInt32(buffer, 0);
-            double inputSampleRateMs = ((1.0 / inputSampleRateHz) / 1000.0);
+            double inputSampleRateMs = 1.0 / inputSampleRateHz;
 
+            fs.Read(buffer, 0, 12); // 0x00, 0x50, 0x00, 0x20, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
-            /*
-
-            int inputSampleRate = (int)(1.0 / (chennels[0].TimeStep / 1000.0));
-            byte[] inputSampleRateBuffer = BitConverter.GetBytes(inputSampleRate);
-            fs.Write(inputSampleRateBuffer, 0, inputSampleRateBuffer.Length);
-
-            fs.Write(new byte[] { 0x00, 0x50, 0x00, 0x20, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, 12);
-
-            for (int i = 0; i < chennels.Count; i++)
+            for (int i = 0; i < chennelsCount; i++)
             {
-                fs.Write(new byte[] { 0x20, 0x12, 0x60, 0xFF }, 0, 4);
-                byte[] name = new byte[0x40];
-                name[0] = (byte)'C';
-                name[1] = (byte)'h';
-                name[2] = (byte)':';
-                name[3] = (byte)((int)'0' + i);
-                fs.Write(name, 0, 0x40);
-                fs.WriteByte(GetChannelInputLevelCode(chennels[i]));
-                fs.Write(new byte[] { 0x12, 0x00, 0x00, 0x00, 0x00 }, 0, 5);
-                fs.WriteByte((byte)i);
-                fs.Write(new byte[] { 0x00, 0xFE, 0xFE, 0xFE, 0x00, 0x12, 0x00 }, 0, 7);
+                fs.Read(buffer, 0, 4); // 0x20, 0x12, 0x60, 0xFF
+                fs.Read(buffer, 0, 0x40); // name
+                GetChannelInputLevelCode(_Channels[i], (byte)fs.ReadByte());
+                fs.Read(buffer, 0, 5); // 0x12, 0x00, 0x00, 0x00, 0x00
+                fs.Read(buffer, 0, 1); // number
+                fs.Read(buffer, 0, 7); // 0x00, 0xFE, 0xFE, 0xFE, 0x00, 0x12, 0x00
             }
 
-            int curr_pos = (int)fs.Position;
-            fs.Seek(0, SeekOrigin.Begin);
-            byte[] crc_buffer = new byte[curr_pos];
-            fs.Read(crc_buffer, 0, curr_pos);
-            Crc32 crc = new Crc32();
-            byte[] crc_value = crc.ComputeChecksumBytes(crc_buffer);
-            fs.Seek(curr_pos, SeekOrigin.Begin);
-            fs.Write(crc_value, 0, 4);
+            fs.Read(buffer, 0, 4); // crc
 
-            fs.WriteByte(0x57);
-            fs.WriteByte(0x44);
+            fs.Read(buffer, 0, 2); // 0x57, 0x44
 
-            long dataSize = ((chennels[0].Data.LongLength * chennels.Count) * 2);
-            byte[] countSamplesBuffer = BitConverter.GetBytes(dataSize);
-            fs.Write(countSamplesBuffer, 0, countSamplesBuffer.Length);
+            // Read data size
+            fs.Read(buffer, 0, 8);
+            long dataSize = BitConverter.ToInt64(buffer, 0);
 
-            long sampleCount = chennels[0].Data.LongLength;
+            long sampleCount = (dataSize / 2) / chennelsCount;
+
+            for (int j = 0; j < chennelsCount; j++)
+            {
+                _Channels[j].Data = new double[sampleCount];
+                _Channels[j].TimeStep = inputSampleRateHz;
+            }
+
             for (long i = 0; i < sampleCount; i++)
             {
-                for (int j = 0; j < chennels.Count; j++)
+                for (int j = 0; j < chennelsCount; j++)
                 {
-                    short value = (short)(GetChannelK(chennels[j]) * chennels[j].Data[i]);
-                    byte[] buffer = BitConverter.GetBytes(value);
-                    fs.Write(buffer, 0, 2);
+                    fs.Read(buffer, 0, 2);
+                    short data = BitConverter.ToInt16(buffer, 0);
+                    _Channels[j].Data[i] = data / GetChannelK(_Channels[j]);
                 }
             }
-            */
+
             fs.Close();
+        }
 
-            /*
-            // Count samples
-            int _Samples = fs.ReadByte();
-            _Samples |= (fs.ReadByte() << 8);
-            _Samples |= (fs.ReadByte() << 16);
-            _Samples |= (fs.ReadByte() << 32);
-
-            Channel channel1 = new Channel();
-
-            int ch1InputLevel = (int)fs.ReadByte();
-
-            fs.Seek(0x03, SeekOrigin.Current);
-
-            int ch1Divider = (int)fs.ReadByte();  
-          
-            fs.Seek(0x03, SeekOrigin.Current);
-
-            bool ch1Enable = fs.ReadByte() == 0x01;
-
-            fs.Seek(sizeof(int) //Width
-                + sizeof(int) //Offest
-                + sizeof(double) //Gain
-                + sizeof(double) //Divide
-                + sizeof(double) //Scale
-                , SeekOrigin.Current);
-
-            Channel channel2 = new Channel();
-            
-            int ch2InputLevel = (int)fs.ReadByte();
-            fs.Seek(0x03, SeekOrigin.Current);
-
-            int ch2Divider = (int)fs.ReadByte();
-            fs.Seek(0x03, SeekOrigin.Current);
-
-            bool ch2Enable = fs.ReadByte() == 0x01;
-
-            fs.Seek(sizeof(int) //Width
-                + sizeof(int) //Offest
-                + sizeof(double) //Gain
-                + sizeof(double) //Divide
-                + sizeof(double) //Scale
-                , SeekOrigin.Current);
-
-            int TimeIndex = (short)fs.ReadByte();
-            TimeIndex |= (short)(fs.ReadByte() << 8);
-            fs.Seek(0x02, SeekOrigin.Current);
-
-            channel1.TimeStep = channel2.TimeStep = (TimeDivision[TimeIndex] * 10.0) / 1000.0; 
-
-            if (ch1Enable)
+        private double GetChannelK(Channel ch)
+        {
+            if (ch.Max < 0.2 && ch.Min > -0.2)
             {
-                channel1.Data = new double[_Samples];
-                for (int i = 0; i < _Samples; i++)
-                {
-                    byte[] buff = new byte[sizeof(double)];
-                    fs.Read(buff, 0, sizeof(double));
-                    double value = BitConverter.ToDouble(buff, 0) * DividerValue[ch1Divider];
-
-                    if (channel1.Max < value)
-                    {
-                        channel1.Max = value;
-                    }
-
-                    if (channel1.Min > value)
-                    {
-                        channel1.Min = value;
-                    }
-
-                    channel1.Data[i] = value;
-                }               
-                _Channels.Add(channel1);
-            }
-            if (ch2Enable)
-            {
-                channel2.Data = new double[_Samples];                    
-                for (int i = 0; i < _Samples; i++)
-                {                    
-                    byte[] buff = new byte[sizeof(double)];
-                    fs.Read(buff, 0, sizeof(double));
-                    double value = BitConverter.ToDouble(buff, 0) * DividerValue[ch2Divider];
-
-                    if (channel2.Max < value)
-                    {
-                        channel2.Max = value;
-                    }
-
-                    if (channel2.Min > value)
-                    {
-                        channel2.Min = value;
-                    }
-
-                    channel2.Data[i] = value;
-                }                
-                _Channels.Add(channel2);
+                return 8192.0 / 0.4;
             }
 
-            fs.Close()*/
+            if (ch.Max < 0.5 && ch.Min > -0.5)
+            {
+                return 8192.0 / 1.0;
+            }
+
+            if (ch.Max < 1.0 && ch.Min > -1.0)
+            {
+                return 8192.0 / 2.0;
+            }
+
+            if (ch.Max < 2.0 && ch.Min > -2.0)
+            {
+                return 8192.0 / 4.0;
+            }
+
+            if (ch.Max < 5.0 && ch.Min > -5.0)
+            {
+                return 8192.0 / 10.0;
+            }
+
+            if (ch.Max < 10.0 && ch.Min > -10.0)
+            {
+                return 8192.0 / 20.0;
+            }
+
+            if (ch.Max < 20.0 && ch.Min > -20.0)
+            {
+                return 8192.0 / 40.0;
+            }
+
+            if (ch.Max < 50.0 && ch.Min > -50.0)
+            {
+                return 8192.0 / 100.0;
+            }
+
+            if (ch.Max < 100.0 && ch.Min > -100.0)
+            {
+                return 8192.0 / 200.0;
+            }
+
+            if (ch.Max < 200.0 && ch.Min > -200.0)
+            {
+                return 8192.0 / 400.0;
+            }
+
+            if (ch.Max < 500.0 && ch.Min > -500.0)
+            {
+                return 8192.0 / 1000.0;
+            }
+
+            if (ch.Max < 1000.0 && ch.Min > -1000.0)
+            {
+                return 8192.0 / 2000.0;
+            }
+
+            return 8192.0 / 2000.0;
+        }
+
+        private void GetChannelInputLevelCode(Channel ch, byte code)
+        {
+            if (code == 0x02)
+            {
+                ch.Max = 0.2;
+                ch.Min = -0.2;
+                return;
+            }
+
+            if (code == 0x05)
+            {
+                ch.Max = 0.5;
+                ch.Min = -0.5;
+                return;
+            }
+
+            if (code == 0x11)
+            {
+                ch.Max = 1.0;
+                ch.Min = -1.0;
+                return;
+            }
+
+            if (code == 0x12)
+            {
+                ch.Max = 2.0;
+                ch.Min = -2.0;
+                return;
+            }
+
+            if (code == 0x15)
+            {
+                ch.Max = 5.0;
+                ch.Min = -5.0;
+                return;
+            }
+
+            if (code == 0x21)
+            {
+                ch.Max = 10.0;
+                ch.Min = -10.0;
+                return;
+            }
+
+            if (code == 0x22)
+            {
+                ch.Max = 20.0;
+                ch.Min = -20.0;
+                return;
+            }
+
+            if (code == 0x25)
+            {
+                ch.Max = 50.0;
+                ch.Min = -50.0;
+                return;
+            }
+
+            if (code == 0x31)
+            {
+                ch.Max = 100.0;
+                ch.Min = -100.0;
+                return;
+            }
+
+            if (code == 0x32)
+            {
+                ch.Max = 200.0;
+                ch.Min = -200.0;
+                return;
+            }
+
+            if (code == 0x35)
+            {
+                ch.Max = 500.0;
+                ch.Min = -500.0;
+                return;
+            }
+
+            if (code == 0x41)
+            {
+                ch.Max = 1000.0;
+                ch.Min = -1000.0;
+                return;
+            }
+
+            ch.Max = 1000.0;
+            ch.Min = -1000.0;
         }
 
         List<Channel> _Channels = new List<Channel>();
