@@ -13,8 +13,7 @@ namespace OscConverter.Input
             {
                 case ".dex": return new dex(filename);
                 case ".drc": return new drc(filename);
-                case ".mwf": return new mwf(filename);
-                default: throw new Exception("Unknown format");
+                default: throw new Exception("Неподдерживаемый формат файла");
             }
         }
     }

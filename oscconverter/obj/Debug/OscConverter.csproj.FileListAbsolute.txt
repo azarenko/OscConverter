@@ -2,7 +2,7 @@ C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.exe
 C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.pdb
 C:\projects\OscConverter\OscConverter\bin\Debug\OscConverter.exe
 C:\projects\OscConverter\OscConverter\bin\Debug\OscConverter.pdb
-C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.csprojResolveAssemblyReference.cache
 C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.MainForm.resources
 C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.Properties.Resources.resources
 C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.csproj.GenerateResource.Cache
+C:\projects\OscConverter\OscConverter\obj\Debug\OscConverter.csprojResolveAssemblyReference.cache

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using OscConverter.Output;
+using System.IO;
 
 namespace OscConverter
 {
@@ -14,6 +15,7 @@ namespace OscConverter
         public MainForm()
         {
             InitializeComponent();
+            saveFileDialog.Filter = "Postolov|*.mwf";
         }
 
         List<Channel> channels = null;
@@ -24,8 +26,18 @@ namespace OscConverter
             {
                 openFileName.Text = openFileDialog.FileName;
 
-                Input.InputInterface inputInstance = Input.InputFactory.GetInstance(openFileDialog.FileName);
+                Input.InputInterface inputInstance = null;
 
+                try
+                {
+                    inputInstance = Input.InputFactory.GetInstance(openFileDialog.FileName);
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                
                 channels = inputInstance.GetChannels();
 
                 inputFileInfo.Text = string.Empty;
@@ -36,6 +48,8 @@ namespace OscConverter
                     inputFileInfo.Text += channels[i].ToString();
                     inputFileInfo.Text += "\r\n";
                 }
+
+                saveFileName.Text = Path.GetDirectoryName(openFileName.Text) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(openFileName.Text) + GetOutputFileExtension();
             }            
         }
 
@@ -47,17 +61,14 @@ namespace OscConverter
                 return;
             }
 
+            saveFileDialog.FileName = saveFileName.Text;
+
             if (saveFileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
-            saveFileName.Text = saveFileDialog.FileName;
-
-            outInterface outInstance = outFactory.GetInstance(saveFileDialog.FileName);
-            outInstance.SetChannels(channels);
-
-            MessageBox.Show("File converted: " + saveFileDialog.FileName, "Converting", MessageBoxButtons.OK, MessageBoxIcon.Information);                
+            saveFileName.Text = saveFileDialog.FileName;             
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -67,12 +78,35 @@ namespace OscConverter
 
         private void outPutFormatList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch(outPutFormatList.SelectedIndex)
+            saveFileDialog.Filter = GetOutputFileFilter();
+        }
+
+        private string GetOutputFileFilter()
+        {
+            switch (outPutFormatList.SelectedIndex)
             {
-                case 0: saveFileDialog.Filter = "Postolov|*.mwf"; break;
-                case 1: saveFileDialog.Filter = "MTPro|*.mt"; break;
-                default: throw new Exception("");
-            }                        
+                case 0: return "Postolov|*.mwf";
+                case 1: return "MTPro|*.mt";
+                default: throw new Exception("Unsupported output file type");
+            }
+        }
+
+        private string GetOutputFileExtension()
+        {
+            switch (outPutFormatList.SelectedIndex)
+            {
+                case 0: return ".mwf";
+                case 1: return "*.mt";
+                default: throw new Exception("Unsupported output file type");
+            }
+        }
+
+        private void convert_Click(object sender, EventArgs e)
+        {
+            outInterface outInstance = outFactory.GetInstance(saveFileName.Text);
+            outInstance.SetChannels(channels);
+
+            MessageBox.Show("File converted: " + saveFileName.Text, "Converting", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
