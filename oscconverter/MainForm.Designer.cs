@@ -200,7 +200,8 @@ namespace OscConverter
             this.outPutFormatList.FormattingEnabled = true;
             this.outPutFormatList.Items.AddRange(new object[] {
             "Postolov",
-            "MTPro"});
+            "MTPro",
+            "WAV"});
             this.outPutFormatList.Location = new System.Drawing.Point(64, 19);
             this.outPutFormatList.Name = "outPutFormatList";
             this.outPutFormatList.Size = new System.Drawing.Size(113, 21);

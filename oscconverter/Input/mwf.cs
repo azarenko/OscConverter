@@ -36,7 +36,7 @@ namespace OscConverter.Input
             // Read seamples rate
             fs.Read(buffer, 0, 4);
             int inputSampleRateHz = BitConverter.ToInt32(buffer, 0);
-            double inputSampleRateMs = 1.0 / inputSampleRateHz;
+            double inputSampleRateMs = (1.0 / inputSampleRateHz) * 1000.0;
 
             fs.Read(buffer, 0, 12); // 0x00, 0x50, 0x00, 0x20, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
@@ -63,7 +63,7 @@ namespace OscConverter.Input
             for (int j = 0; j < chennelsCount; j++)
             {
                 _Channels[j].Data = new double[sampleCount];
-                _Channels[j].TimeStep = inputSampleRateHz;
+                _Channels[j].TimeStep = inputSampleRateMs;
             }
 
             for (long i = 0; i < sampleCount; i++)

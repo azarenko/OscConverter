@@ -79,6 +79,10 @@ namespace OscConverter
         private void outPutFormatList_SelectedIndexChanged(object sender, EventArgs e)
         {
             saveFileDialog.Filter = GetOutputFileFilter();
+            if (File.Exists(openFileName.Text))
+            {
+                saveFileName.Text = Path.GetDirectoryName(openFileName.Text) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(openFileName.Text) + GetOutputFileExtension();
+            }
         }
 
         private string GetOutputFileFilter()
@@ -87,6 +91,7 @@ namespace OscConverter
             {
                 case 0: return "Postolov|*.mwf";
                 case 1: return "MTPro|*.mt";
+                case 2: return "WAV|*.wav";
                 default: throw new Exception("Unsupported output file type");
             }
         }
@@ -96,7 +101,8 @@ namespace OscConverter
             switch (outPutFormatList.SelectedIndex)
             {
                 case 0: return ".mwf";
-                case 1: return "*.mt";
+                case 1: return ".mt";
+                case 2: return ".wav";
                 default: throw new Exception("Unsupported output file type");
             }
         }

@@ -13,6 +13,7 @@ namespace OscConverter.Output
             {
                 case ".mwf": return new mwf(filename);
                 case ".mt": return new mt(filename);
+                case ".wav": return new wav(filename);
                 default: throw new Exception("Unknown format");
             }
         }

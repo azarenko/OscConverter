@@ -72,6 +72,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Output\mt.cs" />
+    <Compile Include="Output\wav.cs" />
     <Compile Include="Output\mwf.cs" />
     <Compile Include="Output\outFactory.cs" />
     <Compile Include="Output\outInterface.cs" />
